@@ -1,5 +1,38 @@
 'use strict';
 
+function showTypeOf(type){
+    return typeof(type);
+}
+
+function getExpensesMonth(expenseMonth1, expenseMonth2) {
+    if ( !expenseMonth1 ) {
+        expenseMonth1 = 0;
+    } else if ( !expenseMonth2 ) {
+        expenseMonth2 = 0;
+    }
+    return expenseMonth1 + expenseMonth2;
+}
+
+function getAccumulatedMonth(incomeMonth, getExpensesMonth) {
+    return incomeMonth - getExpensesMonth;
+}
+
+function getTargetMonth(accumulatesInMonth, target) {
+    return Math.ceil(target/accumulatesInMonth);
+}
+
+function getStatusIncome(budgetForDay) {
+    if ( budgetForDay >=  1200 ) {
+        return ('У вас высокий уровень дохода');
+    } else if ( (budgetForDay >= 600) && (budgetForDay <= 1200) ) {
+        return ('У вас средний уровень дохода');
+    } else if ( (budgetForDay >= 0) && (budgetForDay <= 600) ) {
+        return ('К сожалению, у вас уровень дохода ниже среднего');
+    } else {
+        return ('Что-то пошло не так');
+    }
+}
+
 const money = parseInt(prompt('Ваш месячный доход?')),
       addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую'),
       deposit = confirm('Есть ли у вас депозит в банке?'),
@@ -7,34 +40,25 @@ const money = parseInt(prompt('Ваш месячный доход?')),
       amount1 = parseInt(prompt('Во сколько это обойдется?')),
       expenses2 = prompt('Введите обязательную статью расходов?'),
       amount2 = parseInt(prompt('Во сколько это обойдется?')),
-      budgetMonth = money - amount1,
       income = 'freelance', 
       mission = 500000, 
       period = 12;
 
-let budgetDay = money/30; // это переменная потому, что в задании сказано её поправить
+let budgetDay = money/30;
 
-console.log(typeof money, typeof income, typeof deposit);
+const accumulatedMonth = getAccumulatedMonth(money, getExpensesMonth(amount1, amount2));
 
-console.log(addExpenses.length);
+console.log(showTypeOf(money), ' ', showTypeOf(income), ' ', showTypeOf(deposit));
 
-console.log(`Период равен ${period} месяцев\nЦель заработать ${mission} рублей`);
+console.log('Расходы за месяц: ', getExpensesMonth(amount1, amount2));
 
-console.log(addExpenses.toLowerCase());
 console.log(addExpenses.toLowerCase().split(', '));
 
-console.log('Бюджет на день без учета обязательных расходов: ', budgetDay);
+console.log('Срок достижения цели: ', 
+            getTargetMonth(accumulatedMonth, mission), 
+            ' месяцев');
 
-budgetDay = Math.floor(budgetMonth/30);
-console.log(`По нашим расчетам ваша цель будет достигнута за ${Math.ceil(mission/budgetMonth)} месяцев`);
+budgetDay = Math.floor(accumulatedMonth/30);
 console.log(`Ваш бюджет на день с учетом обязательных расходов: ${budgetDay}`);
 
-if ( budgetDay >=  1200 ) {
-    console.log('У вас высокий уровень дохода');
-} else if ( (budgetDay >= 600) && (budgetDay <= 1200) ) {
-    console.log('У вас средний уровень дохода');
-} else if ( (budgetDay >= 0) && (budgetDay <= 600) ) {
-    console.log('К сожалению, у вас уровень дохода ниже среднего');
-} else {
-    console.log('Что-то пошло не так');
-}
+console.log(getStatusIncome(budgetDay));
