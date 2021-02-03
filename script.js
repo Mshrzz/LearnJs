@@ -8,11 +8,10 @@ const money = parseInt(prompt('Ваш месячный доход?')),
       expenses2 = prompt('Введите обязательную статью расходов?'),
       amount2 = parseInt(prompt('Во сколько это обойдется?')),
       budgetMonth = money - amount1,
+      budgetDay = money/30,
       income = 'freelance', 
       mission = 500000, 
       period = 12;
-
-let budgetDay = money/30; // это переменная потому, что в задании сказано её поправить
 
 console.log(typeof money, typeof income, typeof deposit);
 
@@ -25,9 +24,8 @@ console.log(addExpenses.toLowerCase().split(', '));
 
 console.log('Бюджет на день без учета обязательных расходов: ', budgetDay);
 
-budgetDay = Math.floor(budgetMonth/30);
 console.log(`По нашим расчетам ваша цель будет достигнута за ${Math.ceil(mission/budgetMonth)} месяцев`);
-console.log(`Ваш бюджет на день с учетом обязательных расходов: ${budgetDay}`);
+console.log(`Ваш бюджет на день с учетом обязательных расходов: ${Math.floor(budgetMonth/30)}`);
 
 if ( budgetDay >=  1200 ) {
     console.log('У вас высокий уровень дохода');
