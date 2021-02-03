@@ -40,11 +40,10 @@ const money = parseInt(prompt('Ваш месячный доход?')),
       amount1 = parseInt(prompt('Во сколько это обойдется?')),
       expenses2 = prompt('Введите обязательную статью расходов?'),
       amount2 = parseInt(prompt('Во сколько это обойдется?')),
+      budgetDay = money/30,
       income = 'freelance', 
       mission = 500000, 
       period = 12;
-
-let budgetDay = money/30;
 
 const accumulatedMonth = getAccumulatedMonth(money, getExpensesMonth(amount1, amount2));
 
@@ -58,7 +57,6 @@ console.log('Срок достижения цели: ',
             getTargetMonth(accumulatedMonth, mission), 
             ' месяцев');
 
-budgetDay = Math.floor(accumulatedMonth/30);
-console.log(`Ваш бюджет на день с учетом обязательных расходов: ${budgetDay}`);
+console.log(`Ваш бюджет на день с учетом обязательных расходов: ${Math.floor(accumulatedMonth/30)}`);
 
 console.log(getStatusIncome(budgetDay));
