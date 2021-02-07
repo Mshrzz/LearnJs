@@ -4,7 +4,9 @@ function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-function start(incomeMoney) {
+function start() {
+
+    let incomeMoney = 0;
 
     do {
         incomeMoney = parseInt(prompt('Ваш месячный доход?'));
