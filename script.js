@@ -87,10 +87,17 @@ let appData = {
 
         appData.deposit = confirm('Есть ли у вас депозит в банке?');
 
+        let parseValue = 0,
+            expensesKey,
+            expensesProp;
+
         for ( let i = 0; i < 2; i++ ) {
-            let parseValue = 0;
-            let expensesKey = prompt('Введите обязательную статью расходов?');
-            let expensesProp;
+
+            do {
+                expensesKey = prompt('Введите обязательную статью расходов?');
+            }
+            while ( (expensesKey === null) || (expensesKey.trim() === '') || (isNumber(parseFloat(expensesKey))) );
+            
             do {
                 parseValue = parseInt(prompt('Во сколько это обойдется?'));
                 let chooseNumToArr = isNumber(parseValue) ? expensesProp = parseValue: parseValue = NaN;
