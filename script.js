@@ -70,14 +70,25 @@ let appData = {
         // Полученный массив присваиваем addExpensesOut
 
         for (let i = 0; i < appData.addExpenses.length; i ++) {
+            
+            // Кусок с циклом while действует по такой логике:
+            // Если у нас нулевой элемент пустая строка, то 
+            // Мы смотрим пустой ли 1ый и тд
+            // Если не пустой - делаем его заглавным
+            
+            let k = 0;
+
+            while ( appData.addExpenses[i].charAt(k) === ' ' ) {
+                k += 1;
+            }
 
             if ( i === appData.addExpenses.length - 1) {
-                addExpensesOut += appData.addExpenses[i].charAt(0).toUpperCase() + appData.addExpenses[i].substring(1);
+                addExpensesOut += appData.addExpenses[i].charAt(k).toUpperCase() + appData.addExpenses[i].substring(k+1);
                 continue;
             }
 
-            addExpensesOut += appData.addExpenses[i].charAt(0).toUpperCase() + 
-                              appData.addExpenses[i].substring(1) + '@';
+            addExpensesOut += appData.addExpenses[i].charAt(k).toUpperCase() + 
+                              appData.addExpenses[i].substring(k+1) + '@';
         }
 
         // Полученный оформленный массив присваиваем свойству appData.addExpences
