@@ -75,7 +75,7 @@ let appData = {
             // Если у нас нулевой элемент пустая строка, то 
             // Мы смотрим пустой ли 1ый и тд
             // Если не пустой - делаем его заглавным
-            
+
             let k = 0;
 
             while ( appData.addExpenses[i].charAt(k) === ' ' ) {
@@ -83,7 +83,8 @@ let appData = {
             }
 
             if ( i === appData.addExpenses.length - 1) {
-                addExpensesOut += appData.addExpenses[i].charAt(k).toUpperCase() + appData.addExpenses[i].substring(k+1);
+                addExpensesOut += appData.addExpenses[i].charAt(k).toUpperCase() + 
+                                  appData.addExpenses[i].substring(k+1);
                 continue;
             }
 
