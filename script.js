@@ -28,12 +28,62 @@ let appData = {
     expenses: {},
     addExpenses: [],
     deposit: false,
+    percentDeposit: 0,
+    moneyDeposit: 0,
     mission: 500000,
     period: 12,
     asking: function() {
 
-        let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
+        let itemIncome, 
+            cashIncome, 
+            addExpenses, 
+            addExpensesOut = [];
+
+        if (confirm('Есть ли у вас дополнительный источник заработка?')) {
+
+            do {
+                itemIncome = prompt('Какой у вас дополнительный источник заработка?');
+            }
+            while ( (itemIncome === null) || (itemIncome.trim() === '') || (isNumber(parseFloat(itemIncome))) );
+            
+            do {
+                cashIncome = parseFloat(prompt('Сколько в месяц вы на этом зарабатываете?'));
+            } 
+            while( !isNumber(cashIncome) );
+
+            appData.income[itemIncome] = cashIncome;
+
+        }
+
+        // Здесь контролируется корректность ввода статьи обязательных расходов
+
+        do {
+            addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
+        }
+        while( (addExpenses === null) || (addExpenses.trim() === '') || (isNumber(parseFloat(addExpenses))) );
+
+        // Полученную строку с расходами дробим на массив
         appData.addExpenses = addExpenses.toLowerCase().split(', ');
+
+        // Пересобираем этот массив, каждому элементу делаем первую букву большой
+        // В конце каждого элемента (кроме последнего) добавляем разделитель - @
+        // Полученный массив присваиваем addExpensesOut
+
+        for (let i = 0; i < appData.addExpenses.length; i ++) {
+
+            if ( i === appData.addExpenses.length - 1) {
+                addExpensesOut += appData.addExpenses[i].charAt(0).toUpperCase() + appData.addExpenses[i].substring(1);
+                continue;
+            }
+
+            addExpensesOut += appData.addExpenses[i].charAt(0).toUpperCase() + 
+                              appData.addExpenses[i].substring(1) + '@';
+        }
+
+        // Полученный оформленный массив присваиваем свойству appData.addExpences
+        appData.addExpenses = addExpensesOut.split('@');
+        // Склеиваем и выводим в консоль
+        console.log(appData.addExpenses.join(', '));
 
         appData.deposit = confirm('Есть ли у вас депозит в банке?');
 
@@ -60,7 +110,9 @@ let appData = {
 
     },
     getBudget: function() {
-        return appData.budget - appData.expensesMonth;
+        appData.budgetMonth = appData.budget - appData.expensesMonth;
+        appData.budgetDay = Math.floor(appData.budgetMonth/30);
+        return appData.budgetMonth;
     },
     getTargetMonth: function() {
 
@@ -88,6 +140,26 @@ let appData = {
             return ('Что-то пошло не так');
         }
 
+    },
+    getInfoDeposit: function() {
+
+        if (appData.deposit) {
+
+            do {
+                appData.percentDeposit = prompt('Какой годовой процент?');
+            }
+            while ( !isNumber(appData.percentDeposit) );
+
+            do {
+                appData.moneyDeposit = prompt('Какая сумма заложена?');
+            }
+            while ( !isNumber(appData.moneyDeposit) );
+
+        }
+
+    },
+    calcSavedMoney: function() {
+        return appData.budgetMonth * appData.period;
     }
 };
 
@@ -99,3 +171,4 @@ console.log(`Наша программа включает в себя данны
 for (let key in appData) {
     console.log(key + ' : ' + appData[key]);
 }
+appData.getInfoDeposit();
