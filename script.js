@@ -63,7 +63,7 @@ let appData = {
         while( (addExpenses === null) || (addExpenses.trim() === '') || (isNumber(parseFloat(addExpenses))) );
 
         // Полученную строку с расходами дробим на массив
-        appData.addExpenses = addExpenses.toLowerCase().split(', ');
+        appData.addExpenses = addExpenses.toLowerCase().split(',');
 
         // Пересобираем этот массив, каждому элементу делаем первую букву большой
         // В конце каждого элемента (кроме последнего) добавляем разделитель - @
