@@ -2,18 +2,15 @@
 
 const salaryAmount = document.querySelector('.salary-amount'), // Строка ввода месячного дохода
       // Блок: Дополнительный доход   
-      incomeBlock = document.querySelector('.income'),
-      buttonPlusIncome = incomeBlock.querySelector('button'),
+      buttonPlusIncome = document.querySelector('.income_add'),
       // Поля ввода для блока дополнительный доход  
-      incomeItemsBlock = document.querySelector('.income-items'),
-      inputIncomeTitle = incomeItemsBlock.querySelector('.income-title'),
-      inputIncomeAmount = incomeItemsBlock.querySelector('.income-amount'),
+      inputIncomeTitle = document.querySelectorAll('.income-title')[1],
+      inputIncomeAmount = document.querySelector('.income-amount'),
       // Блок: Возможный доход
       inputAdditionalIncome1 = document.querySelectorAll('.additional_income-item')[0],
       inputAdditionalIncome2 = document.querySelectorAll('.additional_income-item')[1],
       // Блок: Обязательные расходы 
-      expensesBlock = document.querySelector('.expenses'),
-      buttonPlusExpenses = expensesBlock.querySelector('button'),
+      buttonPlusExpenses = document.querySelector('.expenses_add'),
       // Поля ввода для блока обязательные расходы
       expensesItemsBlock = document.querySelector('.expenses-items'),
       expensesTitle = document.querySelector('.expenses-title'),
