@@ -1,5 +1,45 @@
 'use strict';
 
+const salaryAmount = document.querySelector('.salary-amount'), // Строка ввода месячного дохода
+      // Блок: Дополнительный доход   
+      incomeBlock = document.querySelector('.income'),
+      buttonPlusIncome = incomeBlock.querySelector('button'),
+      // Поля ввода для блока дополнительный доход  
+      incomeItemsBlock = document.querySelector('.income-items'),
+      inputIncomeTitle = incomeItemsBlock.querySelector('.income-title'),
+      inputIncomeAmount = incomeItemsBlock.querySelector('.income-amount'),
+      // Блок: Возможный доход
+      inputAdditionalIncome1 = document.querySelectorAll('.additional_income-item')[0],
+      inputAdditionalIncome2 = document.querySelectorAll('.additional_income-item')[1],
+      // Блок: Обязательные расходы 
+      expensesBlock = document.querySelector('.expenses'),
+      buttonPlusExpenses = expensesBlock.querySelector('button'),
+      // Поля ввода для блока обязательные расходы
+      expensesItemsBlock = document.querySelector('.expenses-items'),
+      expensesTitle = document.querySelector('.expenses-title'),
+      expensesAmount = document.querySelector('.expenses-amount'),
+      // Блок: Возможные расходы
+      inputAdditionalExpenses = document.querySelector('.additional_expenses-item'),
+      checkboxDeposit = document.querySelector('#deposit-check'),
+      // Блок: Цель
+      inputTargetAmount = document.querySelector('.target-amount'),
+      // Блок: Период расчета
+      selectPeriod = document.querySelector('.period-select'),
+      // Блок: Доходы
+      budgetMonthValue = document.getElementsByClassName('budget_month-value')[0],
+      budgetDayValue = document.getElementsByClassName('budget_day-value')[0],
+      expensesMonthValue = document.getElementsByClassName('expenses_month-value')[0],
+      additionalIncomeValue = document.getElementsByClassName('additional_income-value')[0],
+      additionalExpensesValue = document.getElementsByClassName('additional_expenses-value')[0],
+      incomePeriodValue = document.getElementsByClassName('income_period-value')[0],
+      targetMonthValue = document.getElementsByClassName('target_month-value')[0],
+      // Блок: Кнопка расчета
+      calculateButton = document.getElementById('start');
+
+// Пока закоментируем нижний блок, чтобы не мешал
+
+/*
+
 function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
@@ -191,3 +231,5 @@ for (let key in appData) {
     console.log(key + ' : ' + appData[key]);
 }
 appData.getInfoDeposit();
+
+*/
