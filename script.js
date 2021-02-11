@@ -13,6 +13,7 @@ const body = document.querySelector('body'),
       bookArray = [book1, book2, book3, book4, book5, book6],
       chapterElementsBook2 = book2.querySelectorAll('li'),
       chapterElementsBook5 = book5.querySelectorAll('li'),
+      chapterElementsBook6 = book6.querySelectorAll('li'),
       lastLi = document.createElement('li');
 
 for (let i = 0; i < bookArray.length; i++) {
@@ -36,4 +37,4 @@ chapterElementsBook5[8].before(chapterElementsBook5[5]);
 
 lastLi.textContent = 'Глава 8: За пределами ES6';
 
-book6.append(lastLi);
+chapterElementsBook6[9].insertAdjacentElement('beforebegin', lastLi);
