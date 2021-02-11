@@ -33,30 +33,12 @@ const salaryAmount = document.querySelector('.salary-amount'), // Строка �
       // Блок: Кнопка расчета
       calculateButton = document.getElementById('start');
 
-// Пока закоментируем нижний блок, чтобы не мешал
-
-/*
-
 function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-function start() {
-
-    let incomeMoney = 0;
-
-    do {
-        incomeMoney = parseInt(prompt('Ваш месячный доход?'));
-    }
-    while(!isNumber(incomeMoney));
-
-    return incomeMoney;
-}
-
-const money = start();
-
 let appData = {
-    budget: money,
+    budget: 0,
     budgetDay: 0,
     budgetMonth: 0,
     expensesMonth: 0,
@@ -69,6 +51,34 @@ let appData = {
     moneyDeposit: 0,
     mission: 500000,
     period: 12,
+    start: function() {
+        let money = 0;
+
+        // do {
+        //     money = parseInt(prompt('Ваш месячный доход?'));
+        // }
+        // while(!isNumber(money));
+        if (salaryAmount.value === '') {
+            alert('Ошибка! Поле "Месячный доход" должно быть заполнено');
+            return;
+        }
+        appData.budget = salaryAmount.value;
+        console.log(salaryAmount.value);
+
+        // appData.asking();
+        // console.log(appData.getExpensesMonth());
+        // console.log(appData.getTargetMonth());
+        // console.log(appData.getStatusIncome());
+    },
+    addExpensesBlock: function() {
+        let expensesItems = document.querySelectorAll('.expenses-items');
+        let cloneExpensesItem = expensesItems[0].cloneNode(true);
+        expensesItems[0].parentNode.insertBefore(cloneExpensesItem, buttonPlusExpenses);
+
+        if ( expensesItems.length  === 2 ) {
+            buttonPlusExpenses.style.display = 'none';
+        }
+    },
     asking: function() {
 
         let itemIncome, 
@@ -219,14 +229,12 @@ let appData = {
     }
 };
 
-appData.asking();
-console.log(appData.getExpensesMonth());
-console.log(appData.getTargetMonth());
-console.log(appData.getStatusIncome());
-console.log(`Наша программа включает в себя данные: `);
-for (let key in appData) {
-    console.log(key + ' : ' + appData[key]);
-}
-appData.getInfoDeposit();
+calculateButton.addEventListener('click', appData.start);
 
-*/
+buttonPlusExpenses.addEventListener('click', appData.addExpensesBlock);
+
+// console.log(`Наша программа включает в себя данные: `);
+// for (let key in appData) {
+//     console.log(key + ' : ' + appData[key]);
+// }
+// appData.getInfoDeposit();
