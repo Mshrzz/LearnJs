@@ -1,3 +1,5 @@
+'use strict';
+
 const body = document.querySelector('body'),
       advertising = document.querySelector('.adv'),
       titles = document.querySelectorAll('a'),
