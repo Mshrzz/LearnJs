@@ -1,71 +1,85 @@
 'use strict';
 
-const todoControl = document.querySelector('.todo-control'),
-      headerInput = document.querySelector('.header-input'),
-      todoList = document.querySelector('.todo-list'),
-      todoCompleted = document.querySelector('.todo-completed');
+document.addEventListener('DOMContentLoaded', function(){
 
-const toDoData = [];
+    const todoControl = document.querySelector('.todo-control'),
+          headerInput = document.querySelector('.header-input'),
+          todoList = document.querySelector('.todo-list'),
+          todoCompleted = document.querySelector('.todo-completed');
 
-const render = function() {
-    todoList.textContent = '';
-    todoCompleted.textContent = '';
+    let toDoData = [];
 
-    toDoData.forEach(function(item, index){
-        const li = document.createElement('li');
-        li.classList.add('todo-item');
-        li.innerHTML = `<span class="text-todo">${item.value}</span>
-                        <div class="todo-buttons">
-                            <button class="todo-remove"></button>
-                            <button class="todo-complete"></button>
-                        </div>`;
-        if (item.completed) {
-            todoCompleted.append(li);
-        } else {
-            todoList.append(li);
-        }
+    const render = function() {
 
-        const btnTodoComplete = li.querySelector('.todo-complete'),
-              btnTodoRemove = li.querySelector('.todo-remove');
+        toDoData = JSON.parse(localStorage.getItem('toDoData')) || [];
+        console.log(toDoData);
 
-        btnTodoComplete.addEventListener('click', function(){
-            item.completed = !item.completed;
-            render();
+        todoList.textContent = '';
+        todoCompleted.textContent = '';
+        toDoData.forEach(function(item, index){
+
+            const li = document.createElement('li');
+
+            li.classList.add('todo-item');
+            li.innerHTML = `<span class="text-todo">${item.value}</span>
+                            <div class="todo-buttons">
+                                <button class="todo-remove"></button>
+                                <button class="todo-complete"></button>
+                            </div>`;
+            if (item.completed) {
+                todoCompleted.append(li);
+            } else {
+                todoList.append(li);
+            }
+                
+            const btnTodoComplete = li.querySelector('.todo-complete'),
+                  btnTodoRemove = li.querySelector('.todo-remove');
+    
+            btnTodoComplete.addEventListener('click', function(){
+
+                item.completed = !item.completed;
+
+                localStorage.setItem('toDoData', JSON.stringify(toDoData));
+                render();
+            });
+    
+            btnTodoRemove.addEventListener('click', function(){
+                console.log(index);
+                toDoData = toDoData.splice(index);
+                console.log(toDoData); 
+                render();
+            });
+
         });
-
-        btnTodoRemove.addEventListener('click', function(){
-            delete toDoData[index];
-            render();
-        });
-
-    });
-};
-
-todoControl.addEventListener('submit', function(event){
-    event.preventDefault();
-
-    headerInput.addEventListener('focus', function(){
-        headerInput.style.color = 'white';
-        headerInput.placeholder = 'Какие планы?';
-    });
-
-    if (headerInput.value.trim() === '') {
-        headerInput.value = '';
-        headerInput.style.color = 'red';
-        headerInput.placeholder = 'Вы ввели пустую строку';
-        return;
-    }
-
-    const newToDo = {
-        value: headerInput.value,
-        completed: false
     };
 
-    headerInput.value = '';
+    todoControl.addEventListener('submit', function(event){
+        event.preventDefault();
 
-    toDoData.push(newToDo);
+        headerInput.addEventListener('focus', function(){
+            headerInput.style.color = 'white';
+            headerInput.placeholder = 'Какие планы?';
+        });
+
+        if (headerInput.value.trim() === '') {
+            headerInput.value = '';
+            headerInput.style.color = 'red';
+            headerInput.placeholder = 'Вы ввели пустую строку';
+            return;
+        }
+
+        const newToDo = {
+            value: headerInput.value,
+            completed: false
+        };
+
+        headerInput.value = '';
+
+        toDoData.push(newToDo);
+        localStorage.setItem('toDoData', JSON.stringify(toDoData));
+        render();
+    });
 
     render();
-});
 
-render();
+});
