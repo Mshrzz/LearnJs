@@ -44,9 +44,8 @@ document.addEventListener('DOMContentLoaded', function(){
             });
     
             btnTodoRemove.addEventListener('click', function(){
-                console.log(index);
-                toDoData = toDoData.splice(index);
-                console.log(toDoData); 
+                toDoData.splice(index, 1);
+                localStorage.setItem('toDoData', JSON.stringify(toDoData));
                 render();
             });
 
@@ -63,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
         if (headerInput.value.trim() === '') {
             headerInput.value = '';
-            headerInput.style.color = 'red';
             headerInput.placeholder = 'Вы ввели пустую строку';
             return;
         }
