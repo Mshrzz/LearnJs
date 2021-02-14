@@ -95,7 +95,7 @@ let appData = {
         targetMonthValue.value = appData.getTargetMonth();
         incomePeriodValue.value = appData.calcSavedMoney();
 
-        selectPeriod.addEventListener('change', function(event){
+        selectPeriod.addEventListener('input', function(event){
             incomePeriodValue.value = appData.calcSavedMoney();
         });
     },
@@ -289,7 +289,7 @@ calculateButton.addEventListener('click', appData.isBudgetEmpty);
 buttonPlusExpenses.addEventListener('click', appData.addExpensesBlock);
 buttonPlusIncome.addEventListener('click', appData.addIncomeBlock);
 
-selectPeriod.addEventListener('change', appData.changeRange);
+selectPeriod.addEventListener('input', appData.changeRange);
 
 // console.log(`Наша программа включает в себя данные: `);
 // for (let key in appData) {
