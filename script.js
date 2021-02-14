@@ -57,16 +57,6 @@ let appData = {
     start: function() {
         let money = 0;
 
-        // do {
-        //     money = parseInt(prompt('Ваш месячный доход?'));
-        // }
-        // while(!isNumber(money));
-
-        // if (salaryAmount.value === '') {
-        //     alert('Ошибка! Поле "Месячный доход" должно быть заполнено');
-        //     return;
-        // }
-
         appData.budget = +salaryAmount.value;
         console.log(salaryAmount.value);
 
@@ -101,6 +91,7 @@ let appData = {
     },
     addExpensesBlock: function() {
         let cloneExpensesItem = expensesItems[0].cloneNode(true);
+
         expensesItems[0].parentNode.insertBefore(cloneExpensesItem, buttonPlusExpenses);
         expensesItems = document.querySelectorAll('.expenses-items');
 
@@ -110,6 +101,7 @@ let appData = {
     },
     addIncomeBlock: function() {
         let cloneIncomeItem = incomeItems[0].cloneNode(true);
+
         incomeItems[0].parentNode.insertBefore(cloneIncomeItem, buttonPlusIncome);
         incomeItems = document.querySelectorAll('.income-items');
 
@@ -157,68 +149,18 @@ let appData = {
     },
     getAddIncome: function() {
         inputAdditionalIncome.forEach(function(item) {
+
             let itemValue = item.value.trim();
+
             if ( itemValue !== '' ) {
                 appData.addIncome.push(itemValue);
             }
+
         });
     },
     changeRange: function(event) {
         let rangeIndicator = document.querySelector('.period-amount');
         rangeIndicator.textContent = event.target.value;
-    },
-    asking: function() {
-
-        let itemIncome, 
-            cashIncome, 
-            addExpenses, 
-            addExpensesOut = [];
-
-
-
-        // Здесь контролируется корректность ввода статьи обязательных расходов
-        do {
-            addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
-        }
-        while( (addExpenses === null) || (addExpenses.trim() === '') || (isNumber(parseFloat(addExpenses))) );
-
-        // Полученную строку с расходами дробим на массив
-        appData.addExpenses = addExpenses.toLowerCase().split(',');
-
-        // Пересобираем этот массив, каждому элементу делаем первую букву большой
-        // В конце каждого элемента (кроме последнего) добавляем разделитель - @
-        // Полученный массив присваиваем addExpensesOut
-
-        for (let i = 0; i < appData.addExpenses.length; i ++) {
-            
-            // Кусок с циклом while действует по такой логике:
-            // Если у нас нулевой элемент пустая строка, то 
-            // Мы смотрим пустой ли 1ый и тд
-            // Если не пустой - делаем его заглавным
-
-            let k = 0;
-
-            while ( appData.addExpenses[i].charAt(k) === ' ' ) {
-                k += 1;
-            }
-
-            if ( i === appData.addExpenses.length - 1) {
-                addExpensesOut += appData.addExpenses[i].charAt(k).toUpperCase() + 
-                                  appData.addExpenses[i].substring(k+1);
-                continue;
-            }
-
-            addExpensesOut += appData.addExpenses[i].charAt(k).toUpperCase() + 
-                              appData.addExpenses[i].substring(k+1) + '@';
-        }
-
-        // Полученный оформленный массив присваиваем свойству appData.addExpences
-        appData.addExpenses = addExpensesOut.split('@');
-        // Склеиваем и выводим в консоль
-        console.log(appData.addExpenses.join(', '));
-
-        appData.deposit = confirm('Есть ли у вас депозит в банке?');
-
     },
     getExpensesMonth: function() {
 
@@ -290,9 +232,3 @@ buttonPlusExpenses.addEventListener('click', appData.addExpensesBlock);
 buttonPlusIncome.addEventListener('click', appData.addIncomeBlock);
 
 selectPeriod.addEventListener('input', appData.changeRange);
-
-// console.log(`Наша программа включает в себя данные: `);
-// for (let key in appData) {
-//     console.log(key + ' : ' + appData[key]);
-// }
-// appData.getInfoDeposit();
