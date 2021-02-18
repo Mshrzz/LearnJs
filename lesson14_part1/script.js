@@ -1,6 +1,6 @@
 'use strict';
 
-function DomElement(selector, height, width, bg, fontSize, text) {
+function DomElement(selector = '.js', height = '100px', width = '100px', bg = 'red', fontSize = '15px', text = 'Hello, world') {
     this.selector = selector;
     this.height = height;
     this.width = width;
@@ -16,15 +16,15 @@ DomElement.prototype.createElement = function() {
     switch (this.selector[0]) {
         case '.':
             insertElem = document.createElement('div');
+            insertElem.classList.add(this.selector.slice(1, this.selector.length));
             break;
         case '#':
             insertElem = document.createElement('p');
+            insertElem.id = `${this.selector}`;
             break;
         defalut:
             alert('Ошибка! Селектор введен некорректно.');
     }
-
-    insertElem.classList.add(this.selector.slice(1, this.selector.length));
     insertElem.style.cssText = `height: ${this.height};
                                 width: ${this.width};
                                 background: ${this.bg};
