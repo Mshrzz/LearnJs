@@ -169,10 +169,10 @@ class AppData {
             const startStr = item.className.split('-')[0];
 
             const itemTitle = item.querySelector(`.${startStr}-title`).value;
-            const itemAmount = item.querySelector(`.${startStr}-amount`).value;
+            const itemAmount = +item.querySelector(`.${startStr}-amount`).value;
 
             if (itemTitle !== '' && itemAmount !== '') {
-                this[startStr][itemTitle] = +itemAmount;
+                this[startStr][itemTitle] = itemAmount;
             }
         };
 
