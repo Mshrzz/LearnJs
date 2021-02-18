@@ -164,6 +164,9 @@ class AppData {
 
     getExpInc() {
 
+        incomeItems = document.querySelectorAll('.income-items');
+        expensesItems = document.querySelectorAll('.expenses-items');
+
         const count = item => {
             console.log(item);
             const startStr = item.className.split('-')[0];
