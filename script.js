@@ -309,7 +309,8 @@ class AppData {
             inputDepositPercent.style.display = 'inline-block';
             
             inputDepositPercent.addEventListener('input', function(){
-                inputDepositPercent.value = inputDepositPercent.value.replace(/[^0-9]/, '');
+                inputDepositPercent.value = inputDepositPercent.value.replace(/(^\d(?=.{2}$))/, '');
+                inputDepositPercent.value = inputDepositPercent.value.replace(/[^\d]/, '');
             });
 
         } else {
