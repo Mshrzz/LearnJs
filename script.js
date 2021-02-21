@@ -306,7 +306,6 @@ class AppData {
         console.log(this);
         const valueSelect = this.value;
         if ( valueSelect === 'other' ) {
-            // Надо запилить
             inputDepositPercent.value = '';
             inputDepositPercent.style.display = 'inline-block';
             
