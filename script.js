@@ -294,10 +294,12 @@ class AppData {
     }
 
     isDepositPercentNaN() {
+
         if ( (inputDepositPercent.value < 1) || (inputDepositPercent.value > 100) ) {
             alert('Значение процента возможно только в диапазоне от 1 до 100!');
             inputDepositPercent.value = 0;
         }
+
     }
 
     changePercent() {
@@ -309,14 +311,18 @@ class AppData {
             inputDepositPercent.style.display = 'inline-block';
             
             inputDepositPercent.addEventListener('input', function(){
+
                 inputDepositPercent.value = inputDepositPercent.value.replace(/(^\d(?=.{3}$))/, '');
                 inputDepositPercent.value = inputDepositPercent.value.replace(/[^\d]/, '');
+
                 if (inputDepositPercent.value > 100) {
                     inputDepositPercent.value = 100;
                 }
+
                 if (inputDepositPercent.value[0] < 1) {
                     inputDepositPercent.value = 1;
                 }
+
             });
 
         } else {
@@ -326,8 +332,16 @@ class AppData {
         }
     }
 
+    checkboxChange() {
+        this.deposit = checkboxDeposit.checked;
+        if ( !this.deposit ) {
+            calculateButton.disabled = false;
+        }
+    }
+
     depositHandler() {
         if ( checkboxDeposit.checked ) {
+            this.deposit = true;
             selectDeposit.style.display = 'inline-block';
             inputDepositAmount.style.display = 'inline-block';
 
@@ -335,7 +349,18 @@ class AppData {
                 inputDepositAmount.value = inputDepositAmount.value.replace(/[^0-9]/, '');
             });
 
-            this.deposit = true;
+            if ( inputDepositAmount.value === '' ) {
+                calculateButton.disabled = true;
+                inputDepositAmount.addEventListener('input', function(event){
+                    if ( inputDepositAmount.value === '' ) {
+                        calculateButton.disabled = true;
+                    } else {
+                        calculateButton.disabled = false;
+                    }
+                });
+            }
+
+            calculateButton.addEventListener('click', this.isDepositPercentNaN);
             selectDeposit.addEventListener('change', this.changePercent);
         } else {
             selectDeposit.style.display = 'none';
@@ -348,10 +373,9 @@ class AppData {
     }
 
     eventListeners() {
-        calculateButton.addEventListener('click', this.isDepositPercentNaN);
         calculateButton.addEventListener('click', this.start.bind(this));
         calculateButton.addEventListener('click', this.isBudgetEmpty);
-    
+
         resetButton.addEventListener('click', this.reset.bind(this));
     
         buttonPlusExpenses.addEventListener('click', this.addExpensesBlock);
@@ -360,6 +384,7 @@ class AppData {
         selectPeriod.addEventListener('input', this.changeRange);
 
         checkboxDeposit.addEventListener('change', this.depositHandler.bind(this));
+        checkboxDeposit.addEventListener('change', this.checkboxChange);
     }
 }
 
