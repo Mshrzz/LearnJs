@@ -34,7 +34,7 @@ function getCookie(name) {
 function deleteCookie(name) {
     setCookie(name, "", {
       'max-age': -1
-    })
+    });
 }
 
 
@@ -191,9 +191,10 @@ class AppData {
         }
 
         for (let cookie of allCookiesName) {
-            console.log(`cookie ${cookie} has been deleted, maybe...`);
             deleteCookie(`${cookie}`);
         }
+
+        localStorage.clear();
 
     }
 
@@ -206,6 +207,14 @@ class AppData {
 
     showResult() {
 
+        localStorage.setItem('budgetMonthValue', `${this.budgetMonth}`);
+        localStorage.setItem('budgetDayValue', `${this.budgetDay}`);
+        localStorage.setItem('expensesMonthValue', `${this.expensesMonth}`);
+        localStorage.setItem('additionalExpensesValue', `${this.addExpenses.join(', ')}`);
+        localStorage.setItem('additionalIncomeValue', `${this.addExpenses.join(', ')}`);
+        localStorage.setItem('targetMonthValue', `${this.getTargetMonth()}`);
+        localStorage.setItem('incomePeriodValue', `${this.calcSavedMoney()}`);
+
         setCookie('budgetMonthValue', `${this.budgetMonth}`, {'max-age': 3600});
         setCookie('budgetDayValue', `${this.budgetDay}`, {'max-age': 3600});
         setCookie('expensesMonthValue', `${this.expensesMonth}`, {'max-age': 3600});
@@ -214,7 +223,6 @@ class AppData {
         setCookie('targetMonthValue', `${this.getTargetMonth()}`, {'max-age': 3600});
         setCookie('incomePeriodValue', `${this.calcSavedMoney()}`, {'max-age': 3600});
         setCookie('isLoad', `${true}`, {'max-age': 3600});
-        console.log(document.cookie);
 
         //document.cookie = `budgetMonthValue=${this.budgetMonth}`;
         //document.cookie = `budgetDayValue=${this.budgetDay}`;
@@ -461,6 +469,7 @@ class AppData {
             //console.log(`Input #${i} value = ${allInputs[i].value}`);
             //document.cookie = `input${i}Value=${allInputs[i].value}`;
             setCookie(`input${i}Value`, `${allInputs[i].value}`, {'max-age': 3600});
+            localStorage.setItem(`input${i}Value`, `${allInputs[i].value}`);
 
         }
     }
@@ -504,6 +513,64 @@ class AppData {
                 additionalIncomeValue.value = getCookie('additionalIncomeValue');
                 targetMonthValue.value = getCookie('targetMonthValue');
                 incomePeriodValue.value = getCookie('incomePeriodValue');
+
+                let allCookiesFull = document.cookie.split(';');
+
+                let allCookiesName = [],
+                    allCookiesRes = [],
+                    allLocalStorageName = [];
+        
+                for (let oneCookie of allCookiesFull) {
+                    allCookiesName.push(oneCookie.split('=')[0]);
+                    allCookiesRes.push(oneCookie.split('=')[1]);
+                }
+
+                for (let i = 0; i < localStorage.length; i++) {
+                    allCookiesName.push(localStorage.key(i));
+                }
+
+                for (let i = 0; i < allCookiesName.length; i++) {
+                    if ( (localStorage.getItem(allCookiesName[i].trim()) === null) ) {
+
+                        if ( allCookiesName[i].trim() === 'isLoad' ) {
+                            console.log('Словили лишнюю куку, игнорируем её');
+                            continue;
+                        }
+
+                        console.log('Что-то пошло не так и мы удаляем все куки и очищаем локальное хранилище!');
+
+                        localStorage.clear();
+
+                        for (let cookie of allCookiesName) {
+                            deleteCookie(`${cookie}`);
+                        }
+                    }
+                }
+
+				// delete allCookiesName(allCookiesName.indexOf('isLoad'));
+				// delete allCookiesRes(allCookiesRes.indexOf('true'));
+				console.log(localStorage.getItem(allCookiesName));
+				console.log(allCookiesRes);
+
+                for (let i = 0; i < allCookiesName.length; i++) {
+                    if ( localStorage.getItem(allCookiesName[i].trim()) !== allCookiesRes[i] ) {
+						console.log(localStorage.getItem(allCookiesName[i]));
+						if ( allCookiesName[i].trim() === 'isLoad' ) {
+							console.log('Словили лишнюю куку при сравнении несовпадений, игнорируем её');
+							continue;
+						}
+
+						console.log('Куки не совпадают с данными хранилища, удаляем всё');
+
+                        localStorage.clear();
+
+                        for (let cookie of allCookiesName) {
+                            deleteCookie(`${cookie}`);
+                        }
+                    }
+                }
+
+
 
             }
         }).bind(this));
