@@ -1,5 +1,12 @@
 'use strict';
 
+function getCookie(name) {
+    let matches = document.cookie.match(new RegExp(
+      "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
 const salaryAmount = document.querySelector('.salary-amount'), // Строка ввода месячного дохода
       // Блок: Дополнительный доход   
       buttonPlusIncome = document.querySelector('.income_add'),
@@ -148,6 +155,16 @@ class AppData {
     }
 
     showResult() {
+
+        document.cookie = `budgetMonthValue=${this.budgetMonth}`;
+        document.cookie = `budgetDayValue=${this.budgetDay}`;
+        document.cookie = `expensesMonthValue=${this.expensesMonth}`;
+        document.cookie = `additionalExpensesValue=${this.addExpenses.join(', ')}`;
+        document.cookie = `additionalIncomeValue=${this.addIncome.join(', ')}`;
+        document.cookie = `targetMonthValue=${this.getTargetMonth()}`;
+        document.cookie = `incomePeriodValue=${this.calcSavedMoney()}`;
+        document.cookie = `isLoad=${true}`;
+        
         budgetMonthValue.value = this.budgetMonth;
         budgetDayValue.value = this.budgetDay;
         expensesMonthValue.value = this.expensesMonth;
@@ -155,10 +172,12 @@ class AppData {
         additionalIncomeValue.value = this.addIncome.join(', ');
         targetMonthValue.value = this.getTargetMonth();
         incomePeriodValue.value = this.calcSavedMoney();
-    
+        
         const onRangeChange = selectPeriod.addEventListener('input', (function(event){
             incomePeriodValue.value = this.calcSavedMoney();
+            document.cookie = `incomePeriodValue=${this.calcSavedMoney()}`;
         }).bind(this));
+
     }
 
     addExpensesBlock() {
@@ -384,6 +403,22 @@ class AppData {
 
         checkboxDeposit.addEventListener('change', this.depositHandler.bind(this));
         checkboxDeposit.addEventListener('change', this.checkboxChange);
+
+        document.addEventListener('DOMContentLoaded', (function(){
+            if ( document.cookie.length > 0 ) {
+                this.block(true);
+                budgetMonthValue.value = getCookie('budgetMonthValue');
+                budgetDayValue.value = getCookie('budgetDayValue');
+                expensesMonthValue.value = getCookie('expensesMonthValue');
+                additionalExpensesValue.value = getCookie('additionalExpensesValue');
+                additionalIncomeValue.value = getCookie('additionalIncomeValue');
+                targetMonthValue.value = getCookie('targetMonthValue');
+                incomePeriodValue.value = getCookie('incomePeriodValue');
+                // Теперь осталось заблокировать левую часть
+            }
+        }).bind(this));
+
+
     }
 }
 
