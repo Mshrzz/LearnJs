@@ -1,11 +1,43 @@
 'use strict';
 
+function setCookie(name, value, options = {}) {
+
+    options = {
+      path: '',
+      ...options
+    };
+  
+    if (options.expires instanceof Date) {
+      options.expires = options.expires.toUTCString();
+    }
+  
+    let updatedCookie = (name) + "=" + (value);
+  
+    for (let optionKey in options) {
+      updatedCookie += "; " + optionKey;
+      let optionValue = options[optionKey];
+      if (optionValue !== true) {
+        updatedCookie += "=" + optionValue;
+      }
+    }
+  
+    document.cookie = updatedCookie;
+}
+
 function getCookie(name) {
     let matches = document.cookie.match(new RegExp(
       "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
     ));
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
+
+function deleteCookie(name) {
+    setCookie(name, "", {
+      'max-age': -1
+    })
+}
+
+
 
 const salaryAmount = document.querySelector('.salary-amount'), // Строка ввода месячного дохода
       // Блок: Дополнительный доход   
@@ -107,8 +139,12 @@ class AppData {
                 input.disabled = false;
             }
          });
+
          selectDeposit.disabled = isTrue;
          checkboxDeposit.disabled = isTrue;
+
+         buttonPlusIncome.disabled = isTrue;
+         buttonPlusExpenses.disabled = isTrue;
     }
 
     reset() {
@@ -145,6 +181,20 @@ class AppData {
         this.getInfoDeposit();
         this.getBudget();
         this.showResult();
+
+        let allCookiesFull = document.cookie.split(';');
+
+        let allCookiesName = [];
+
+        for (let oneCookie of allCookiesFull) {
+            allCookiesName.push(oneCookie.split('=')[0]);
+        }
+
+        for (let cookie of allCookiesName) {
+            console.log(`cookie ${cookie} has been deleted, maybe...`);
+            deleteCookie(`${cookie}`);
+        }
+
     }
 
     isBudgetEmpty() {
@@ -156,14 +206,24 @@ class AppData {
 
     showResult() {
 
-        document.cookie = `budgetMonthValue=${this.budgetMonth}`;
-        document.cookie = `budgetDayValue=${this.budgetDay}`;
-        document.cookie = `expensesMonthValue=${this.expensesMonth}`;
-        document.cookie = `additionalExpensesValue=${this.addExpenses.join(', ')}`;
-        document.cookie = `additionalIncomeValue=${this.addIncome.join(', ')}`;
-        document.cookie = `targetMonthValue=${this.getTargetMonth()}`;
-        document.cookie = `incomePeriodValue=${this.calcSavedMoney()}`;
-        document.cookie = `isLoad=${true}`;
+        setCookie('budgetMonthValue', `${this.budgetMonth}`, {'max-age': 3600});
+        setCookie('budgetDayValue', `${this.budgetDay}`, {'max-age': 3600});
+        setCookie('expensesMonthValue', `${this.expensesMonth}`, {'max-age': 3600});
+        setCookie('additionalExpensesValue', `${this.addExpenses.join(', ')}`, {'max-age': 3600});
+        setCookie('additionalIncomeValue', `${this.addExpenses.join(', ')}`, {'max-age': 3600});
+        setCookie('targetMonthValue', `${this.getTargetMonth()}`, {'max-age': 3600});
+        setCookie('incomePeriodValue', `${this.calcSavedMoney()}`, {'max-age': 3600});
+        setCookie('isLoad', `${true}`, {'max-age': 3600});
+        console.log(document.cookie);
+
+        //document.cookie = `budgetMonthValue=${this.budgetMonth}`;
+        //document.cookie = `budgetDayValue=${this.budgetDay}`;
+        //document.cookie = `expensesMonthValue=${this.expensesMonth}`;
+        //document.cookie = `additionalExpensesValue=${this.addExpenses.join(', ')}`;
+        //document.cookie = `additionalIncomeValue=${this.addIncome.join(', ')}`;
+        //document.cookie = `targetMonthValue=${this.getTargetMonth()}`;
+        //document.cookie = `incomePeriodValue=${this.calcSavedMoney()}`;
+        //document.cookie = `isLoad=${true}`;
         
         budgetMonthValue.value = this.budgetMonth;
         budgetDayValue.value = this.budgetDay;
@@ -390,9 +450,25 @@ class AppData {
         }
     }
 
+    addInputsToCookies() {
+        let allInputs = document.querySelectorAll('input');
+        for (let i = 0; i < allInputs.length; i++) {
+
+            if ( allInputs[i].classList.contains('result-total') ) {
+                continue;
+            }
+
+            //console.log(`Input #${i} value = ${allInputs[i].value}`);
+            //document.cookie = `input${i}Value=${allInputs[i].value}`;
+            setCookie(`input${i}Value`, `${allInputs[i].value}`, {'max-age': 3600});
+
+        }
+    }
+
     eventListeners() {
         calculateButton.addEventListener('click', this.start.bind(this));
         calculateButton.addEventListener('click', this.isBudgetEmpty);
+        calculateButton.addEventListener('click', this.addInputsToCookies);
 
         resetButton.addEventListener('click', this.reset.bind(this));
     
@@ -406,7 +482,21 @@ class AppData {
 
         document.addEventListener('DOMContentLoaded', (function(){
             if ( document.cookie.length > 0 ) {
+
+                let allInputs = document.querySelectorAll('input');
+
+                for (let i = 0; i < allInputs.length; i++ ) {
+
+                    if ( allInputs[i].classList.contains('result-total') ) {
+                        continue;
+                    }
+
+                    allInputs[i].value = getCookie(`input${i}Value`);
+                }
+
                 this.block(true);
+
+                // Записываем в куки результаты
                 budgetMonthValue.value = getCookie('budgetMonthValue');
                 budgetDayValue.value = getCookie('budgetDayValue');
                 expensesMonthValue.value = getCookie('expensesMonthValue');
@@ -414,7 +504,7 @@ class AppData {
                 additionalIncomeValue.value = getCookie('additionalIncomeValue');
                 targetMonthValue.value = getCookie('targetMonthValue');
                 incomePeriodValue.value = getCookie('incomePeriodValue');
-                // Теперь осталось заблокировать левую часть
+
             }
         }).bind(this));
 
