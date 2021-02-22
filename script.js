@@ -1,5 +1,7 @@
 'use strict';
 
+// Функции для удобной работы с куками
+
 function setCookie(name, value, options = {}) {
 
     options = {
@@ -207,6 +209,8 @@ class AppData {
 
     showResult() {
 
+        // Как только наши результаты просчитаны добавляем их в куки и локальное хранилище
+
         localStorage.setItem('budgetMonthValue', `${this.budgetMonth}`);
         localStorage.setItem('budgetDayValue', `${this.budgetDay}`);
         localStorage.setItem('expensesMonthValue', `${this.expensesMonth}`);
@@ -223,15 +227,6 @@ class AppData {
         setCookie('targetMonthValue', `${this.getTargetMonth()}`, {'max-age': 3600});
         setCookie('incomePeriodValue', `${this.calcSavedMoney()}`, {'max-age': 3600});
         setCookie('isLoad', `${true}`, {'max-age': 3600});
-
-        //document.cookie = `budgetMonthValue=${this.budgetMonth}`;
-        //document.cookie = `budgetDayValue=${this.budgetDay}`;
-        //document.cookie = `expensesMonthValue=${this.expensesMonth}`;
-        //document.cookie = `additionalExpensesValue=${this.addExpenses.join(', ')}`;
-        //document.cookie = `additionalIncomeValue=${this.addIncome.join(', ')}`;
-        //document.cookie = `targetMonthValue=${this.getTargetMonth()}`;
-        //document.cookie = `incomePeriodValue=${this.calcSavedMoney()}`;
-        //document.cookie = `isLoad=${true}`;
         
         budgetMonthValue.value = this.budgetMonth;
         budgetDayValue.value = this.budgetDay;
@@ -459,15 +454,16 @@ class AppData {
     }
 
     addInputsToCookies() {
+
+        // Добавляем в куки и в хранилище введенные значения
         let allInputs = document.querySelectorAll('input');
+
         for (let i = 0; i < allInputs.length; i++) {
 
             if ( allInputs[i].classList.contains('result-total') ) {
                 continue;
             }
 
-            //console.log(`Input #${i} value = ${allInputs[i].value}`);
-            //document.cookie = `input${i}Value=${allInputs[i].value}`;
             setCookie(`input${i}Value`, `${allInputs[i].value}`, {'max-age': 3600});
             localStorage.setItem(`input${i}Value`, `${allInputs[i].value}`);
 
@@ -490,8 +486,11 @@ class AppData {
         checkboxDeposit.addEventListener('change', this.checkboxChange);
 
         document.addEventListener('DOMContentLoaded', (function(){
+
+            // Если у нас уже есть куки, то мы их воспроизводим
             if ( document.cookie.length > 0 ) {
 
+                // Перебираю инпуты и вставляю в них сохранённые значения
                 let allInputs = document.querySelectorAll('input');
 
                 for (let i = 0; i < allInputs.length; i++ ) {
@@ -505,7 +504,7 @@ class AppData {
 
                 this.block(true);
 
-                // Записываем в куки результаты
+                // Записываем в инпуты результатов куки
                 budgetMonthValue.value = getCookie('budgetMonthValue');
                 budgetDayValue.value = getCookie('budgetDayValue');
                 expensesMonthValue.value = getCookie('expensesMonthValue');
@@ -514,63 +513,53 @@ class AppData {
                 targetMonthValue.value = getCookie('targetMonthValue');
                 incomePeriodValue.value = getCookie('incomePeriodValue');
 
+                // Собираем куки в массив 
                 let allCookiesFull = document.cookie.split(';');
 
                 let allCookiesName = [],
-                    allCookiesRes = [],
                     allLocalStorageName = [];
         
                 for (let oneCookie of allCookiesFull) {
-                    allCookiesName.push(oneCookie.split('=')[0]);
-                    allCookiesRes.push(oneCookie.split('=')[1]);
+                    allCookiesName.push(oneCookie.split('=')[0].trim());
                 }
 
+                // Собираем элементы локального хранилища в массив
                 for (let i = 0; i < localStorage.length; i++) {
-                    allCookiesName.push(localStorage.key(i));
+                    allLocalStorageName.push(localStorage.key(i));
                 }
 
+                // Если в локальном хранилище есть какие-то несовпадения с куками
+                // Тогда удаляем всё и очищаем страницу
                 for (let i = 0; i < allCookiesName.length; i++) {
-                    if ( (localStorage.getItem(allCookiesName[i].trim()) === null) ) {
+                    if ( (localStorage.getItem(allCookiesName[i]) === null) ) {
 
-                        if ( allCookiesName[i].trim() === 'isLoad' ) {
-                            console.log('Словили лишнюю куку, игнорируем её');
+                        if ( allCookiesName[i] === 'isLoad' ) {
                             continue;
                         }
 
-                        console.log('Что-то пошло не так и мы удаляем все куки и очищаем локальное хранилище!');
+                        localStorage.clear();
+
+                        for (let cookie of allCookiesName) {
+                            deleteCookie(`${cookie}`);
+                        }
+                        location.reload();
+                    }
+                }
+
+                // Если в куках есть какие-то несовпадения с локальным хранилищем
+                // Тогда удаляем всё и очищаем страницу
+                for (let i = 0; i < allLocalStorageName.length; i++) {
+                    if ( allCookiesName.indexOf(allLocalStorageName[i]) === -1 ) {
 
                         localStorage.clear();
 
                         for (let cookie of allCookiesName) {
                             deleteCookie(`${cookie}`);
                         }
+
+                        location.reload();
                     }
                 }
-
-				// delete allCookiesName(allCookiesName.indexOf('isLoad'));
-				// delete allCookiesRes(allCookiesRes.indexOf('true'));
-				console.log(localStorage.getItem(allCookiesName));
-				console.log(allCookiesRes);
-
-                for (let i = 0; i < allCookiesName.length; i++) {
-                    if ( localStorage.getItem(allCookiesName[i].trim()) !== allCookiesRes[i] ) {
-						console.log(localStorage.getItem(allCookiesName[i]));
-						if ( allCookiesName[i].trim() === 'isLoad' ) {
-							console.log('Словили лишнюю куку при сравнении несовпадений, игнорируем её');
-							continue;
-						}
-
-						console.log('Куки не совпадают с данными хранилища, удаляем всё');
-
-                        localStorage.clear();
-
-                        for (let cookie of allCookiesName) {
-                            deleteCookie(`${cookie}`);
-                        }
-                    }
-                }
-
-
 
             }
         }).bind(this));
