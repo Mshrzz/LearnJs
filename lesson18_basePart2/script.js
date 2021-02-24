@@ -1,3 +1,5 @@
+'use strict';
+
 const p1 = document.createElement('p'),
       p2 = document.createElement('p'),
       p3 = document.createElement('p'),
@@ -7,35 +9,34 @@ let date = new Date();
 
 // доброе утро вечер и тд
 
-nowTime = date.getHours();
+let nowTime = date.getHours();
 
 function dayGreet(currentTime) {
 
-    if ( (nowTime >= 0) && (nowTime<5) ) {
+    if ( (currentTime >= 0) && (currentTime < 5) ) {
         return 'Доброй ночи';
-    } else if ( (nowTime >= 5) && (nowTime<12) ) {
+    } else if ( (currentTime >= 5) && (currentTime<12) ) {
         return 'Доброе утро';
-    } else if ( (nowTime >= 12 ) && (nowTime < 16) ){
+    } else if ( (currentTime >= 12 ) && (currentTime < 16) ){
         return 'Добрый день';
-    } else if ( (nowTime >= 16 ) && (nowTime<0) ) {
+    } else if ( (currentTime >= 16 ) && (currentTime < 24) ) {
         return 'Добрый вечер';
     }
 
 }
-
 document.body.append(p1);
 p1.textContent = dayGreet(nowTime);
 
 
 // сегодня день недели
-todayDay = date.toLocaleString('ru', {weekday: 'long'});
-upperTodayDay = todayDay[0].toUpperCase() + todayDay.slice(1);
+let todayDay = date.toLocaleString('ru', {weekday: 'long'});
+let upperTodayDay = todayDay[0].toUpperCase() + todayDay.slice(1);
 
 document.body.append(p2);
 p2.textContent = `Сегодня ${upperTodayDay}`;
 
 // Текущее время
-todayTime = date.toLocaleTimeString('en');
+let todayTime = date.toLocaleTimeString('en');
 
 document.body.append(p3);
 p3.textContent = todayTime;
