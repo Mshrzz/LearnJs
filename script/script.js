@@ -48,4 +48,59 @@ window.addEventListener('DOMContentLoaded', function(){
 
     countTimer('26 feb 2021 20:15:50');
 
+    // Menu
+    const toggleMenu = () => {
+        const btnMenu = document.querySelector('.menu'),
+              menu = document.querySelector('menu'),
+              closeBtn = document.querySelector('.close-btn'),
+              menuItems = menu.querySelectorAll('ul>li'),
+              handlerMenu = () => menu.classList.toggle('active-menu');
+
+        btnMenu.addEventListener('click', handlerMenu);
+
+        closeBtn.addEventListener('click', handlerMenu);
+
+        menuItems.forEach( elem => elem.addEventListener('click', handlerMenu) );
+    };
+    
+    toggleMenu();
+
+    // Popup
+    const togglePopUp = () => {
+        const popup = document.querySelector('.popup'),
+              popupFrame = document.querySelector('.popup-content'),
+              popupBtn = document.querySelectorAll('.popup-btn'),
+              popupClose = document.querySelector('.popup-close');
+        
+        popupBtn.forEach((elem) => {
+            elem.addEventListener('click', () => {
+
+                popup.style.display = 'block';
+
+                if ( window.innerWidth > 768 ) {
+
+                    let count = 0; 
+
+                    let timer = setInterval(() => {
+                        count++;
+
+                        if ( count >= 39 ) {
+                            clearInterval(timer);
+                            return;
+                        }
+
+                        popupFrame.style.left = count + '%';
+
+                    }, 5);
+                }
+            });
+        });
+
+        popupClose.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
+    };
+
+    togglePopUp();
+
 });
