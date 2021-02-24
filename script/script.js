@@ -3,9 +3,17 @@ window.addEventListener('DOMContentLoaded', function(){
     
     // Timer
     let countTimer = function (deadline) {
+
         let timerHours = document.querySelector('#timer-hours'),
             timerMinutes = document.querySelector('#timer-minutes'),
             timerSeconds = document.querySelector('#timer-seconds');
+        
+        function convertTimeNumber(num) {
+            if ( num < 10 ) {
+                num = '0' + num;
+            }
+            return num;
+        }
 
         function getTimeRemaining() {
 
@@ -22,37 +30,22 @@ window.addEventListener('DOMContentLoaded', function(){
 
             let timer = getTimeRemaining();
 
-            let timeItems = [];
-
-            timeItems.push(timer.hours.toString());
-            timeItems.push(timer.minutes.toString());
-            timeItems.push(timer.seconds.toString());
-
-            for (let i = 0; i < timeItems.length; i++) {
-                if ( timeItems[i].length === 1 ) {
-                    let elem = timeItems[i].split('');
-                    elem.unshift('0');
-                    elem = elem.join('');
-                    timeItems[i] = elem;
-                }
-            }
-
-            timerHours.textContent = timeItems[0];
-            timerMinutes.textContent = timeItems[1];
-            timerSeconds.textContent = timeItems[2];
+            timerHours.textContent = convertTimeNumber(timer.hours);
+            timerMinutes.textContent = convertTimeNumber(timer.minutes);
+            timerSeconds.textContent = convertTimeNumber(timer.seconds);
 
             if ( (timer.timeRemaining === 0) || (timer.timeRemaining < 0) ) {
                 timerHours.textContent = '00';
                 timerMinutes.textContent = '00';
                 timerSeconds.textContent = '00';
-                // countTimer(timer.dateNow);
-                clearInterval(intervalTimer);
+
+                clearInterval(myInterval);
             }
         }
 
-        updateClock();
-    }
+        let myInterval = setInterval(updateClock, 1000);
+    };
 
-    //countTimer('26 feb 2021');
-    let intervalTimer = setInterval(countTimer, 1000, '26 feb 2021 03:43:00');
+    countTimer('26 feb 2021 20:15:50');
+
 });
