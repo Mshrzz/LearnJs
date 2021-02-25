@@ -58,9 +58,18 @@ window.addEventListener('DOMContentLoaded', function(){
 
         btnMenu.addEventListener('click', handlerMenu);
 
-        closeBtn.addEventListener('click', handlerMenu);
+        // closeBtn.addEventListener('click', handlerMenu);
 
-        menuItems.forEach( elem => elem.addEventListener('click', handlerMenu) );
+        // menuItems.forEach( elem => elem.addEventListener('click', handlerMenu) );
+
+        menu.addEventListener('click', (event) => {
+            let target = event.target;
+
+            if ( target.matches('a') ) {
+                handlerMenu();
+            }
+
+        });
     };
     
     toggleMenu();
