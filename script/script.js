@@ -53,7 +53,7 @@ window.addEventListener('DOMContentLoaded', function(){
         const btnMenu = document.querySelector('.menu'),
               menu = document.querySelector('menu'),
               closeBtn = document.querySelector('.close-btn'),
-              menuItems = menu.querySelectorAll('ul>li'),
+              menuItems = menu.querySelectorAll('ul>li>a'),
               handlerMenu = () => menu.classList.toggle('active-menu');
 
         btnMenu.addEventListener('click', handlerMenu);
@@ -79,19 +79,26 @@ window.addEventListener('DOMContentLoaded', function(){
 
                 if ( window.innerWidth > 768 ) {
 
-                    let count = 0; 
+                    let count = 0;
+                    let animation;
 
-                    let timer = setInterval(() => {
+                    let timer = function () {
+
+                        animation = requestAnimationFrame(timer);
+
                         count++;
 
-                        if ( count >= 39 ) {
-                            clearInterval(timer);
+                        if ( count >= 20 ) {
+                            cancelAnimationFrame(animation);
                             return;
+                        } else {
+                            popupFrame.style.left = 2*count + '%';
                         }
 
-                        popupFrame.style.left = count + '%';
+                    };
 
-                    }, 5);
+                    timer();
+
                 }
             });
         });
