@@ -195,6 +195,7 @@ window.addEventListener('DOMContentLoaded', function(){
             }
 
             dot = document.querySelectorAll('.dot');
+            dot[0].classList.add('dot-active');
         };
 
         addDots();
