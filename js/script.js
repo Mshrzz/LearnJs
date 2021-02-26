@@ -31,6 +31,7 @@ class Todo {
         <div class="todo-buttons">
             <button class="todo-remove"></button>
             <button class="todo-complete"></button>
+            <button class="todo-edit"></button>
         </div>
         `);
         if (todo.completed) {
@@ -81,7 +82,27 @@ class Todo {
 
             if (target.matches('.todo-complete')) {
 
-                this.completedItem(target.parentNode.parentNode);
+                this.animateCounter = 0.05;
+
+                let animateRelocateElem = () => {
+
+                    const element = target.parentNode.parentNode;
+
+                    if (element.style.opacity === '') {
+                        element.style.opacity = '1';
+                    }
+
+                    element.style.opacity = `${+element.style.opacity - this.animateCounter}`;
+
+                    if (+element.style.opacity > 0) {
+                        requestAnimationFrame(animateRelocateElem);
+                    } else {
+                        this.completedItem(target.parentNode.parentNode);
+                        cancelAnimationFrame(relocateId);
+                    }
+                };
+
+                let relocateId = requestAnimationFrame(animateRelocateElem);
 
             } else if (target.matches('.todo-remove')) {
 
@@ -107,6 +128,13 @@ class Todo {
 
                 let hideId = requestAnimationFrame(animateHideElem);
 
+            } else if (target.matches('.todo-edit')) {
+                target.parentNode.parentNode.contentEditable = true;
+                target.parentNode.parentNode.addEventListener('blur', () => {
+                    const valueElem = target.parentNode.parentNode.textContent.trim();
+                    this.todoData.get(target.parentNode.parentNode.key).value = valueElem;
+                    this.render();
+                });
             }
         });
     }
