@@ -60,6 +60,21 @@ class Todo {
         return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     }
 
+    deleteAnimate(item, counter, delAnimation) {
+
+        console.log(item);
+
+        if ( +getComputedStyle(item).getPropertyValue('opacity') === 0 ) {
+            console.log(+getComputedStyle(item).getPropertyValue('opacity'));
+            cancelAnimationFrame(delAnimation);
+        }
+
+        item.style.opacity -= counter/10;
+        
+        delAnimation = requestAnimationFrame(this.deleteAnimate(item, counter));
+
+    }
+
     deleteItem(elem) {
         // Удаление элементов
         this.todoData.delete(elem.key);
@@ -83,7 +98,10 @@ class Todo {
                 this.completedItem(target.parentNode.parentNode);
 
             } else if (target.matches('.todo-remove')) {
-
+                let count = 1;
+                let delAnimation;
+                console.log(target.parentNode.parentNode);
+                this.deleteAnimate(target.parentNode ,count, delAnimation);
                 this.deleteItem(target.parentNode.parentNode);
 
             }
