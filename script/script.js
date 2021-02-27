@@ -111,23 +111,25 @@ window.addEventListener('DOMContentLoaded', function(){
     togglePopUp();
 
     // Scroll
-    const scrolling = () => {
-        const anchors = document.querySelectorAll('a[href*="#"]');
-
-        for (let anchor of anchors) {
-            anchor.addEventListener('click', (event) => {
-                event.preventDefault();
-
-                const blockID = anchor.getAttribute('href').substring(1);
-
-                document.getElementById(blockID).scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            });
-        }
+    const smoothScrolling = (scrollingID) => {
+        document.getElementById(scrollingID).scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
     };
 
-    scrolling();
+    document.body.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        let target = event.target,
+            targetTagA = event.target.closest('a');
+
+        if ( (targetTagA) && (targetTagA.getAttribute('href')[0] === '#') && 
+             (targetTagA.getAttribute('href').length > 2) ) {
+                 const blockID = targetTagA.getAttribute('href').substring(1);
+                 smoothScrolling(blockID);
+        }
+
+    });
 
 });
