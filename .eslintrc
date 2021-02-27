@@ -16,7 +16,7 @@
     ],
     "linebreak-style": [
       "error",
-      "linux"
+      "windows"
     ],
     "semi": [
       "error",
