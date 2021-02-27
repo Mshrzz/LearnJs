@@ -56,21 +56,6 @@ window.addEventListener('DOMContentLoaded', function(){
               menuItems = menu.querySelectorAll('ul>li>a'),
               handlerMenu = () => menu.classList.toggle('active-menu');
 
-        // btnMenu.addEventListener('click', handlerMenu);
-
-        // closeBtn.addEventListener('click', handlerMenu);
-
-        // menuItems.forEach( elem => elem.addEventListener('click', handlerMenu) );
-
-        // menu.addEventListener('click', (event) => {
-        //     let target = event.target;
-
-        //     if ( target.matches('a') ) {
-        //         handlerMenu();
-        //     }
-
-        // });
-
         document.body.addEventListener('click', (event) => {
             let target = event.target;
 
