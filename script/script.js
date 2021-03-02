@@ -298,32 +298,47 @@ window.addEventListener('DOMContentLoaded', function(){
         const calcBlock = document.querySelector('.calc-block'),
               footerForm = document.querySelector('.footer-form-input');
 
-        // calcBlock.addEventListener('input', (e) => {
-        //     let target = e.target;
-
-        //     if (target.matches('input')) {
-        //         target.value = target.value.replace(/\D/g, '');
-        //     }
-
-        //     target.addEventListener('blur', () => {
-        //             console.log('blur');
-        //     });
-        // });
-
-        calcBlock.addEventListener('click', (e) => {
+        calcBlock.addEventListener('input', (e) => {
             let target = e.target;
 
             if (target.matches('input')) {
-
-                target.addEventListener('input', () => {
-                    target.value = target.value.replace(/\D/g, '');
-                });
-
-                target.addEventListener('blur', () => {
-                    console.log('blur');
-                });
+                target.value = target.value.replace(/\D/g, '');
             }
         });
+
+
+        document.addEventListener('focusout', e => {
+
+            let target = e.target;
+
+            if (e.target.matches('input')) {
+                
+                target.value = target.value.replace(/^(\s+)|(\s+)$/g, '');
+                target.value = target.value.replace(/[\s]{2,}/g, ' ');
+                target.value = target.value.replace(/[\-]{2,}/, '-');
+
+                if (target.matches('#form2-name') || target.matches('#form2-message')) {
+                    target.value = target.value.replace(/[^а-яё\-\ ]/gi, '');
+                    if (target.matches('#form2-name')) {
+                        target.value = target.value.replace(/^[а-яё]/, function (nameChar) { return nameChar.toUpperCase(); } );
+                    }
+                }
+
+                if (target.matches('#form2-email')) {
+                    target.value = target.value.replace(/[^\w\@\-\_\.\!\~\*\'']/gi, '');
+                }
+
+                if (target.matches('#form2-phone')) {
+                    target.value = target.value.replace(/[^\d\(\)\-]/, '');
+                }
+
+                if (target.matches('input') && target.classList.contains('calc-item')) {
+                    target.value = target.value.replace(/\D/g, '');
+                }
+
+
+            }
+          });
 
         footerForm.addEventListener('input', (e) => {
             let target = e.target;
@@ -349,24 +364,11 @@ window.addEventListener('DOMContentLoaded', function(){
     // Our team block
     const ourTeamChangePhoto = () => {
         const commandBlock = document.getElementById('command');
-        let currentImg;
-        
-        commandBlock.addEventListener('mouseover', (e) => {
-            let target = e.target;
 
-            if (target.matches('img')) {
-                currentImg = target.src;
-                target.src = target.dataset.img;
-            }
-        });
-
-        commandBlock.addEventListener('mouseout', (e) => {
-            let target = e.target;
-
-            if (target.matches('img')) {
-                target.src = currentImg;
-            }
-        });
+        commandBlock.addEventListener('mouseover', (e) => 
+            [e.target.dataset.img, e.target.src] = [e.target.src, e.target.dataset.img]);
+        commandBlock.addEventListener('mouseout', (e) => 
+        [e.target.src, e.target.dataset.img] = [e.target.dataset.img, e.target.src]);
 
     };
 
