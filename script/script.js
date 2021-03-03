@@ -392,9 +392,25 @@ window.addEventListener('DOMContentLoaded', function(){
 
             if (typeValue && squareValue) {
                 total = price*typeValue*squareValue * countValue * dayValue;
-            }
+            } 
 
-            totalValue.textContent = total;
+            // totalValue.textContent = total;
+            let x = 1;
+
+            const animateNumbers = () => {
+
+                const requestId = requestAnimationFrame(animateNumbers);
+
+                x= x * 2;
+                totalValue.textContent = x;
+
+                if (x >= total) {
+                    totalValue.textContent = total;
+                    cancelAnimationFrame(requestId);
+                }
+            };
+
+            requestAnimationFrame(animateNumbers);
         };
 
         calcBlock.addEventListener('change', (e) => {
