@@ -320,7 +320,7 @@ window.addEventListener('DOMContentLoaded', function(){
                 if (target.matches('#form2-name') || target.matches('#form2-message')) {
                     target.value = target.value.replace(/[^а-яё\-\ ]/gi, '');
                     if (target.matches('#form2-name')) {
-                        target.value = target.value.replace(/^[а-яё]/, function (nameChar) { return nameChar.toUpperCase(); } );
+                        target.value = target.value.replace(/(^|\s)[а-яё]/g, function (nameChar) { return nameChar.toUpperCase(); } );
                     }
                 }
 
