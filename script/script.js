@@ -471,9 +471,15 @@ window.addEventListener('DOMContentLoaded', function(){
                 });
 
                 statusMessage.textContent = successMessage;
+                setTimeout(() => {
+                    statusMessage.textContent = '';
+                }, 3000);
             }, (error) => {
                 statusMessage.textContent = errorMessage;
                 console.error(error);
+                setTimeout(() => {
+                    statusMessage.textContent = '';
+                }, 3000);
             });
             
         });
