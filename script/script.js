@@ -450,6 +450,13 @@ window.addEventListener('DOMContentLoaded', function(){
 
             event.preventDefault();
             statusMessage.style.color = 'white';
+
+            if ( event.target.querySelector('[type="email"]').value.length === 0) {
+                alert('Поле email обязательное');
+                return;
+            }
+
+            
             event.target.appendChild(statusMessage);
             statusMessage.textContent = loadMessage;
 
