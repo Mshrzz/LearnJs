@@ -448,8 +448,6 @@ window.addEventListener('DOMContentLoaded', function(){
 
         document.body.addEventListener('submit', (event) => {
 
-            console.log(event.target);
-
             event.preventDefault();
             statusMessage.style.color = 'white';
             event.target.appendChild(statusMessage);
@@ -462,48 +460,49 @@ window.addEventListener('DOMContentLoaded', function(){
                 body[key] = val;
             });
 
-            postData(body, () => {
-
-                let formInputs = event.target.querySelectorAll('input');
+            postData(body)
+                .then(() => {
+                    let formInputs = event.target.querySelectorAll('input');
                 
-                formInputs.forEach(item => {
-                    item.value = '';
-                });
+                    formInputs.forEach(item => {
+                        item.value = '';
+                    });
 
-                statusMessage.textContent = successMessage;
-                setTimeout(() => {
-                    statusMessage.textContent = '';
-                }, 3000);
-            }, (error) => {
-                statusMessage.textContent = errorMessage;
-                console.error(error);
-                setTimeout(() => {
-                    statusMessage.textContent = '';
-                }, 3000);
-            });
-            
+                    statusMessage.textContent = successMessage;
+                })
+                .catch((err) => {
+                    statusMessage.textContent = errorMessage;
+                    console.error(err);
+                })
+                .finally(() => {
+                    setTimeout(() => {
+                        statusMessage.textContent = '';
+                    }, 3000);
+                });
         });
 
-        const postData = (body, outputData, errorData) => {
+        const postData = (body) => {
 
-            const request = new XMLHttpRequest();
+            return new Promise((resolve, reject) => {
+                const request = new XMLHttpRequest();
 
-            request.addEventListener('readystatechange', () => {
-                if (request.readyState !== 4) {
-                    return;
-                }
-
-                if (request.status === 200) {
-                    outputData();
-                } else {
-                    errorData(request.status);
-                }
+                request.addEventListener('readystatechange', () => {
+                    if (request.readyState !== 4) {
+                        return;
+                    }
+    
+                    if (request.status === 200) {
+                        resolve();
+                    } else {
+                        reject(request.status);
+                    }
+                });
+    
+                request.open('POST', './server.php');
+                request.setRequestHeader('Content-Type', 'application/json');
+    
+                request.send(JSON.stringify(body));
             });
-
-            request.open('POST', './server.php');
-            request.setRequestHeader('Content-Type', 'application/json');
-
-            request.send(JSON.stringify(body));
 
         };
     };
