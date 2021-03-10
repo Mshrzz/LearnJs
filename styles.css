@@ -1,0 +1,115 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #29205E;
+    font-family: sans-serif;
+}
+
+.wrap {
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    font-size: 36px;
+    text-align: center;
+    color: #FFFFFF;
+    text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25);
+    margin-top: 50px;
+    margin-bottom: 200px;
+}
+
+.convert-items {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 100px;
+}
+
+.first {
+    display: flex;
+    flex-direction: column;
+    margin-right: 100px;
+}
+
+.first__input {
+    width: 230px;
+    height: 40px;
+    background-color: transparent;
+    margin-bottom: 10px;
+    color: #fff;
+    font-size: 20px;
+    border: 2px solid #FFFFFF;
+    box-shadow: 4px 4px 10px 2px rgba(0, 0, 0, 0.25);
+}
+
+.first__select {
+    width: 70px;
+    height: 30px;
+    border: none;
+    outline: none;
+    background-color: #29205E;
+    color: #fff;
+}
+
+.second {
+    display: flex;
+    flex-direction: column;
+    margin-left: 100px;
+}
+
+.second__value {
+    width: 230px;
+    height: 40px;
+    background-color: transparent;
+    margin-bottom: 10px;
+    color: #fff;
+    font-size: 20px;
+    border: 2px solid #FFFFFF;
+    box-shadow: 4px 4px 10px 2px rgba(0, 0, 0, 0.25);
+}
+
+.second__select {
+    width: 70px;
+    height: 30px;
+    border: none;
+    outline: none;
+    background-color: #29205E;
+    color: #fff;
+}
+
+.convert-items__button {
+    transition: 0.7s;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.convert-items__button:hover {
+    transform: rotate(360deg);
+    transition: 0.7s;
+}
+
+.convert-button {
+    transition: 0.7s;
+    border: none;
+    border-radius: 8px;
+    width: 150px;
+    height: 50px;
+    background-color: #fff;
+    color: #29205E;
+    font-size: 22px;
+    box-shadow: 4px 4px 15px 2px rgba(255, 255, 255, 0.07);
+}
+
+.convert-button:hover {
+    transform: scale(1.1);
+    transition: 0.7s;
+    background-color: transparent;
+    color: #fff;
+    box-shadow: none;
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Coin-Converter</title>
+</head>
+<body>
+    <div class="wrap">
+        <h1 class="title">Coin Converter</h1>
+        <div class="convert-items">
+            <div class="convert-items__first first">
+                <input type="text" id="first" class="first__input">
+                <select name="coins" id="coinTypes1" class="first__select">
+                    <option value="RUB">RUB</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                </select>
+            </div>
+            <button class="convert-items__button" id="changeButton">
+                <img src="btnChange.png" alt="Change button">
+            </button>
+            <div class="convert-items__second second">
+                <div id="second" class="second__value"></div>
+                <select name="coins" id="coinTypes2" class="second__select">
+                    <option value="RUB">RUB</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                </select>
+            </div>
+        </div>
+        <button class="convert-button" id="convertButton">convert</button>
+    </div>
+    <script src="script.js" defer></script>
+</body>
+</html>
