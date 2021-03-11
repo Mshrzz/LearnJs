@@ -23,7 +23,7 @@ const sendForm = () => {
         event.preventDefault();
         statusMessage.style.color = 'white';
 
-        if ( event.target.querySelector('.mess').value.length === 0 ) {
+        if ( event.target.querySelector('.mess') && event.target.querySelector('.mess').value.length === 0 ) {
             alert('Вы должны заполнить все поля');
             return;
         }
