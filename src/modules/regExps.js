@@ -39,7 +39,7 @@ const regExps = () => {
             }
 
             if (target.matches('#form2-phone') || target.matches('#form1-phone') || target.matches('#form3-phone')) {
-                target.value = target.value.replace(/[^\d\(\)\-]/, '');
+                target.value = target.value.replace(/[^\d\(\)\-\+]/, '');
             }
 
             if (target.matches('input') && target.classList.contains('calc-item')) {

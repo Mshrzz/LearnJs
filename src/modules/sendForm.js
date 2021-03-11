@@ -25,6 +25,17 @@ const sendForm = () => {
             return;
         }
 
+        if ( event.target.querySelector('[type="tel"]').value.match(/^\+/) && 
+             event.target.querySelector('[type="tel"]').value.length < 12 ) {
+                alert('Недостаточно символов для номера телефона');
+                return;
+        }
+
+        if ( event.target.querySelector('[type="tel"]').value.match(/^(7|8)/) && 
+             event.target.querySelector('[type="tel"]').value.length < 11 ) {
+                alert('Недостаточно символов для номера телефона');
+                return;
+        }
         
         event.target.appendChild(statusMessage);
         statusMessage.textContent = loadMessage;
