@@ -56,19 +56,19 @@ window.addEventListener('DOMContentLoaded', function(){
               menuItems = menu.querySelectorAll('ul>li>a'),
               handlerMenu = () => menu.classList.toggle('active-menu');
 
-        btnMenu.addEventListener('click', handlerMenu);
-
-        // closeBtn.addEventListener('click', handlerMenu);
-
-        // menuItems.forEach( elem => elem.addEventListener('click', handlerMenu) );
-
-        menu.addEventListener('click', (event) => {
+        document.body.addEventListener('click', (event) => {
             let target = event.target;
 
-            if ( target.matches('a') ) {
+            if ( target.closest('.menu') ) {
                 handlerMenu();
-            }
+            } else if ( target.closest('menu') ) {
+                if ( target.matches('menu a') ) {
+                    handlerMenu();
+                }
 
+            } else {
+                menu.classList.remove('active-menu');
+            }
         });
     };
     
@@ -127,6 +127,34 @@ window.addEventListener('DOMContentLoaded', function(){
     };
 
     togglePopUp();
+
+    // Scroll
+    const smoothScrolling = (scrollingID) => {
+        document.getElementById(scrollingID).scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    };
+    
+    document.body.addEventListener('click', (event) => {
+        
+        let target = event.target,
+            targetTagA = event.target.closest('a');
+        
+        // Сразу отсекаем клик на кнопки отправки заявки
+        if (target.matches('button')) {
+            return;
+        }
+        
+        event.preventDefault();
+    
+        if ( (targetTagA) && (targetTagA.getAttribute('href')[0] === '#') && 
+             (targetTagA.getAttribute('href').length > 2) ) {
+                 const blockID = targetTagA.getAttribute('href').substring(1);
+                 smoothScrolling(blockID);
+        }
+    
+    });
 
     //  Tabs
     const tabs = () => {
@@ -411,7 +439,22 @@ window.addEventListener('DOMContentLoaded', function(){
                 total = price*typeValue*squareValue * countValue * dayValue;
             }
 
-            totalValue.textContent = total;
+            let x = 1;
+
+            const animateNumbers = () => {
+
+                const requestId = requestAnimationFrame(animateNumbers);
+
+                x= x * 2;
+                totalValue.textContent = x;
+
+                if (x >= total) {
+                    totalValue.textContent = total;
+                    cancelAnimationFrame(requestId);
+                }
+            };
+
+            requestAnimationFrame(animateNumbers);
         };
 
         calcBlock.addEventListener('input', (e) => {
@@ -442,6 +485,18 @@ window.addEventListener('DOMContentLoaded', function(){
         const errorMessage = 'Что-то пошло не так.',
               loadMessage = 'Загрузка...',
               successMessage = 'Спасибо! Мы скоро с вами свяжемся.';
+        
+        const postData = (body) => {
+
+            return fetch('./server.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: body
+            });
+    
+        };
 
         const statusMessage = document.createElement('div');
         statusMessage.style.cssText = 'font-size: 2.5rem;';
@@ -487,18 +542,6 @@ window.addEventListener('DOMContentLoaded', function(){
                     }, 3000);
                 });
         });
-
-        const postData = (body) => {
-
-            return fetch('./server.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: body
-            });
-
-        };
     };
 
     sendForm();
