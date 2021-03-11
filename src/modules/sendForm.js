@@ -23,7 +23,7 @@ const sendForm = () => {
         event.preventDefault();
         statusMessage.style.color = 'white';
 
-        if ( event.target.querySelector('.mess') ) {
+        if ( event.target.querySelector('.mess').value.length === 0 ) {
             alert('Вы должны заполнить все поля');
             return;
         }
@@ -35,6 +35,11 @@ const sendForm = () => {
 
         if ( event.target.querySelector('[type="email"]').value.length === 0) {
             alert('Поле email обязательное');
+            return;
+        }
+
+        if ( event.target.querySelector('[type="tel"]').value.length < 11 ) {
+            alert('Недостаточно символов для номера телефона');
             return;
         }
 
