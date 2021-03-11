@@ -5,7 +5,7 @@ const smoothScrolling = () => {
             targetTagA = event.target.closest('a');
         
         // Сразу отсекаем клик на кнопки отправки заявки
-        if (target.matches('button')) {
+        if (target.matches('button') || target.classList.contains('close-btn')) {
             return;
         }
         

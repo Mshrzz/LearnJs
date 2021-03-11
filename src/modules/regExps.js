@@ -72,6 +72,14 @@ const regExps = () => {
 
         if (target.matches('#form3-phone') || target.matches('#form2-phone') || target.matches('#form1-phone')) {
 
+            if ( target.value.match(/^\+/) ) {
+                target.value = target.value.substring(0,12);
+            }
+
+            if ( target.value.match(/^(7|8)/) ) {
+                target.value = target.value.substring(0,11);
+            }
+
             target.value = target.value.replace(/[^\d\(\)\-\+]/, '');
 
         }
