@@ -7,7 +7,10 @@ const sendForm = () => {
 
         return fetch('./server.php', {
             method: 'POST',
-            body: body
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
         });
 
     };
@@ -19,6 +22,16 @@ const sendForm = () => {
 
         event.preventDefault();
         statusMessage.style.color = 'white';
+
+        if ( event.target.querySelector('.mess') ) {
+            alert('Вы должны заполнить все поля');
+            return;
+        }
+
+        if ( event.target.querySelector('[type="text"]').value.length < 2 ) {
+            alert('Минимальная длина имени составляет 2 символа');
+            return;
+        }
 
         if ( event.target.querySelector('[type="email"]').value.length === 0) {
             alert('Поле email обязательное');
@@ -41,8 +54,13 @@ const sendForm = () => {
         statusMessage.textContent = loadMessage;
 
         const formData = new FormData(event.target);
+        let body = {};
 
-        postData(formData)
+        formData.forEach((val, key) => {
+            body[key] = val;
+        });
+
+        postData(body)
             .then((response) => {
                 if (response.status !== 200) {
                     throw new Error('Network status is not 200');
